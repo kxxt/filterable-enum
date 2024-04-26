@@ -10,4 +10,7 @@ pub struct Opts {
     pub repr: Option<String>,
     #[darling(multiple)]
     pub kind_extra_derive: Vec<syn::Ident>,
+    #[darling(multiple)]
+    // TODO: there should be a better way to pass through the attributes
+    pub kind_extra_attrs: Vec<String>,
 }

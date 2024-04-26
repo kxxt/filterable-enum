@@ -46,6 +46,10 @@ pub fn derive_filterable_enum(ts: TokenStream) -> TokenStream {
 
     let kind_extra_derive = attrs.kind_extra_derive;
     let repr = format_ident!("{}", attrs.repr.as_deref().unwrap_or("u32"));
+    let kind_extra_attrs = attrs.kind_extra_attrs.iter().map(|attr| {
+        let attr = syn::parse_str::<syn::Meta>(attr).unwrap();
+        quote!(#[#attr])
+    });
 
     let vis = &input.vis;
     let ident = &input.ident;
@@ -62,11 +66,11 @@ pub fn derive_filterable_enum(ts: TokenStream) -> TokenStream {
     let filterable_enum = get_crate("filterable-enum");
     let ident_kind = format_ident!("{}Kind", ident);
     let ident_filterable = format_ident!("Filterable{}", ident);
-
     let (impl_generics, ty_generics, where_clause) = &input.generics.split_for_impl();
 
     TokenStream::from(quote::quote! {
         // Create EnumKind
+        #(#kind_extra_attrs)*
         #[#filterable_enum::enumflags2::bitflags]
         #[repr(#repr)]
         #[derive(Debug, PartialEq, Clone, Copy, #(#kind_extra_derive,)*)]
