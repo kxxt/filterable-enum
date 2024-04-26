@@ -102,7 +102,7 @@ pub fn derive_filterable_enum(ts: TokenStream) -> TokenStream {
             }
         }
 
-        impl #impl_generics From<#ident #ty_generics> for #ident_filterable #ty_generics {
+        impl #impl_generics From<#ident #ty_generics> for #ident_filterable #ty_generics #where_clause {
             fn from(inner: #ident #ty_generics) -> Self {
                 let id = match inner {
                     #(
