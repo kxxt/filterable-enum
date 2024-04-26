@@ -2,8 +2,8 @@ pub trait FilterableEnum<Enum> {
     type Id;
     type Filter: EnumFilter<Id = Self::Id>;
     fn filterable_id(&self) -> Self::Id;
-    fn filter_ref(&self, filter: Self::Filter) -> Option<&Enum>;
-    fn filter_and_take(self, filter: Self::Filter) -> Option<Enum>;
+    fn filter_ref(&self, filter: impl Into<Self::Filter>) -> Option<&Enum>;
+    fn filter_and_take(self, filter: impl Into<Self::Filter>) -> Option<Enum>;
 }
 
 pub trait EnumFilter {
@@ -56,16 +56,16 @@ mod test {
             self.id
         }
 
-        fn filter_and_take(self, filter: Self::Filter) -> Option<MyEnum> {
-            if filter.contains(self.id) {
+        fn filter_and_take(self, filter: impl Into<Self::Filter>) -> Option<MyEnum> {
+            if filter.into().contains(self.id) {
                 Some(self.inner)
             } else {
                 None
             }
         }
 
-        fn filter_ref(&self, filter: Self::Filter) -> Option<&MyEnum> {
-            if filter.contains(self.id) {
+        fn filter_ref(&self, filter: impl Into<Self::Filter>) -> Option<&MyEnum> {
+            if filter.into().contains(self.id) {
                 Some(&self.inner)
             } else {
                 None
