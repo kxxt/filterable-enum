@@ -1,5 +1,8 @@
 [package]
 name = "filterable-enum-derive"
+description = "A derive macro for generating filterable enums (Combining bitflags and discriminated unions)"
+authors = ["Levi Zim <rsworktech@outlook.com>"]
+license = "MIT"
 version = "0.1.0"
 edition = "2021"
 
