@@ -21,14 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+use darling::FromDeriveInput;
 use proc_macro::TokenStream;
 use proc_macro_crate::{crate_name, FoundCrate};
 use quote::{format_ident, quote};
 use syn::Data;
 
-#[proc_macro_derive(FilterableEnum)]
+mod opts;
+
+#[proc_macro_derive(FilterableEnum, attributes(filterable_enum))]
 pub fn derive_filterable_enum(ts: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(ts as syn::DeriveInput);
+
+    let attrs = self::opts::Opts::from_derive_input(&input).unwrap();
 
     let Data::Enum(data) = input.data else {
         return syn::Error::new_spanned(
@@ -38,6 +43,9 @@ pub fn derive_filterable_enum(ts: TokenStream) -> TokenStream {
         .to_compile_error()
         .into();
     };
+
+    let kind_extra_derive = attrs.kind_extra_derive;
+    let repr = format_ident!("{}", attrs.repr.as_deref().unwrap_or("u32"));
 
     let vis = &input.vis;
     let ident = &input.ident;
@@ -60,8 +68,8 @@ pub fn derive_filterable_enum(ts: TokenStream) -> TokenStream {
     TokenStream::from(quote::quote! {
         // Create EnumKind
         #[#filterable_enum::enumflags2::bitflags]
-        #[repr(u32)]
-        #[derive(Debug, PartialEq, Clone, Copy)]
+        #[repr(#repr)]
+        #[derive(Debug, PartialEq, Clone, Copy, #(#kind_extra_derive,)*)]
         #vis enum #ident_kind {
             #(#kinds,)*
         }

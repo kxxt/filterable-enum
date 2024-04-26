@@ -1,6 +1,7 @@
 use filterable_enum::FilterableEnum;
 
 #[derive(Debug, PartialEq, FilterableEnum)]
+#[filterable_enum(repr = "u8")]
 enum MyEnum {
     A(i32),
     B(String),
