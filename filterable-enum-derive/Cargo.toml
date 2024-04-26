@@ -5,6 +5,8 @@ authors = ["Levi Zim <rsworktech@outlook.com>"]
 license = "MIT"
 version = "0.1.0"
 edition = "2021"
+repository = "https://github.com/kxxt/filterable-enum/tree/main/filterable-enum-derive"
+homepage = "https://github.com/kxxt/filterable-enum"
 
 [lib]
 proc-macro = true
