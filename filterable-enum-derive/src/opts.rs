@@ -1,10 +1,11 @@
-use darling::{FromDeriveInput, FromMeta};
-
+use darling::FromDeriveInput;
 
 #[derive(FromDeriveInput)]
 #[darling(attributes(filterable_enum), forward_attrs(allow, doc, cfg))]
 pub struct Opts {
+    #[allow(unused)]
     ident: syn::Ident,
+    #[allow(unused)]
     attrs: Vec<syn::Attribute>,
     pub repr: Option<String>,
     #[darling(multiple)]
