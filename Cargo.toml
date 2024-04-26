@@ -1,6 +1,10 @@
 workspace = { members = ["filterable-enum-derive"] }
 [package]
 name = "filterable-enum"
+description = "A library for generating filterable enums (Combining bitflags and discriminated unions)"
+categories = []
+authors = ["Levi Zim <rsworktech@outlook.com>"]
+license = "MIT"
 version = "0.1.0"
 edition = "2021"
 
