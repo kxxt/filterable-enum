@@ -46,6 +46,11 @@ pub fn derive_filterable_enum(ts: TokenStream) -> TokenStream {
         .iter()
         .map(|variant| &variant.ident)
         .collect::<Vec<_>>();
+    let patterns = data.variants.iter().map(|v| match &v.fields {
+        syn::Fields::Unit => quote! {},
+        syn::Fields::Named(_) => quote! { { .. } },
+        syn::Fields::Unnamed(_) => quote! { (_) },
+    });
     let filterable_enum = get_crate("filterable-enum");
     let ident_kind = format_ident!("{}Kind", ident);
     let ident_filterable = format_ident!("Filterable{}", ident);
@@ -101,7 +106,7 @@ pub fn derive_filterable_enum(ts: TokenStream) -> TokenStream {
             fn from(inner: #ident #ty_generics) -> Self {
                 let id = match inner {
                     #(
-                        #ident::#kinds(_) => #ident_kind::#kinds,
+                        #ident::#kinds #patterns => #ident_kind::#kinds,
                     )*
                 };
                 #ident_filterable { inner, id }
