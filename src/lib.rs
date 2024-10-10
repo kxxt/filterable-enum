@@ -1,3 +1,5 @@
+#![warn(clippy::all, clippy::nursery)]
+
 pub use enumflags2;
 
 pub use filterable_enum_derive::FilterableEnum;
