@@ -72,7 +72,7 @@ pub fn derive_filterable_enum(ts: TokenStream) -> TokenStream {
         // Create EnumKind
         #[#filterable_enum::enumflags2::bitflags]
         #[repr(#repr)]
-        #[derive(Debug, PartialEq, Clone, Copy, #(#kind_extra_derive,)*)]
+        #[derive(Debug, PartialEq, Eq, Clone, Copy, #(#kind_extra_derive,)*)]
         #(#kind_extra_attrs)*
         #vis enum #ident_kind {
             #(#kinds,)*
